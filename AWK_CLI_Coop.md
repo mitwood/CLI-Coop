@@ -1,3 +1,22 @@
+```markdown
+# AWK Functions Examples
+
+This will be a set of examples that utilize AWK functions.
+
+The best part about BASH is that it treats all text as numbers and vice versa. That would normally sound terrible, and is in many programming settings, but the quick-and-dirty nature of the CLI makes this exactly what I like about it.
+
+So much of mod/sim work is about manipulating text, so most scripts/codes for pre-/post-analysis are boilerplate IO.
+
+AWK is excellent at this text manipulation and also has great uses just as a command line tool.
+
+## Basics of AWK
+
+Like `head`, `tail`, `cat`, etc., data in AWK is manipulated as effectively rows and columns of values.
+
+```bash
+awk '{print($1,$2,$3)}' File
+```
+
 This will be a set of examples that utilize AWK functions.
 
 The best part about BASH is that it treats all text as numbers and vice versa.
