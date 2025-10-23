@@ -3,7 +3,9 @@
 
 This will be a set of examples that utilize AWK functions.
 
-The best part about BASH is that it treats all text as numbers and vice versa. That would normally sound terrible, and is in many programming settings, but the quick-and-dirty nature of the CLI makes this exactly what I like about it.
+The best part about BASH is that it treats all text as numbers and vice versa. 
+That would normally sound terrible, and is in many programming settings, but the quick-and-dirty 
+nature of the CLI makes this exactly what I like about it.
 
 So much of mod/sim work is about manipulating text, so most scripts/codes for pre-/post-analysis are boilerplate IO.
 
@@ -17,72 +19,71 @@ Like `head`, `tail`, `cat`, etc., data in AWK is manipulated as effectively rows
 awk '{print($1,$2,$3)}' File
 ```
 
-This will be a set of examples that utilize AWK functions.
+Nice, just gives us the columns 1, 2, and 3 out of our file. It combos well when you are listing folders:
 
-The best part about BASH is that it treats all text as numbers and vice versa.
+```bash
+ls -ltrh | awk '{print($10)}'
+```
 
-That would normally sound terrible, and is in many programming settings, the quick-and-dirty
-nature of the CLI makes this exactly what I like about it. 
+Natively, the field separator is a space, but you can define your own with a flag:
 
-So much of mod/sim work is about manipulating text, so most scripts/codes for pre-/post-analysis are boilerplate IO. 
-
-AWK is excellent at this text manipulation, and also has great uses just as a command line tool.
-
-Lets go through the basics:
-
-Like head, tail, cat, etc., data in awk is manipulated as effectively rows and columns of values
-
->awk '{print($1,$2,$3)}' File
-
-Nice, just gives us the columns 1,2,3 out of our file. Combos well when you are listing folders;
-
->ls -ltrh | awk '{print($10)}'
-
-Natively, the field seperater is a space, but you can define your own with a flag
-
-> awk -F "," print($1,$2,$3) File
+```bash
+awk -F "," '{print($1,$2,$3)}' File
+```
 
 Other useful things to know;
 
-> awk '{print($0)}'
+```bash
+ awk '{print($0)}'
+```
 
 Prints all columns
 
-> awk '{print(NR)}'
+```bash
+awk '{print(NR)}'
+```
 
 Prints line numbers
 
-> awk '{print(NF)}'
+```bash
+awk '{print(NF)}'
+```
 
 Prints number of columns on each line
 
 For example;
 
->alias width='comp_width'
->function comp_width () {
->        input=$1
->        awk '{print(NF)}' $1 | sort -nk1,1  | tail -n1
->}
- 
+```bash
+alias width='comp_width'
+function comp_width () {
+        input=$1
+        awk '{print(NF)}' $1 | sort -nk1,1  | tail -n1
+}
+```
+
 Gives you the max width in a file, and is super fast since its native in bash
 
 Now a I said before AWK processes a file line by line, so you can set up conditional prints based on data in a line. 
 
 Everything in the {} is a condition to print, left blank it is True.
 
->awk '{if(NF==3)print($0)}'
+```bash
+awk '{if(NF==3)print($0)}'
+```
 
-> ls -ltrh | awk -F ".xyz" '{print($0)}' | awk -F "File" '{print($1)}' | awk '{if($1<10000)print($1)}'
+#Useful Examples
 
+Ok now for some fun stuff, you can create arrays to manipulate text before printing;
 
-#Ok now for some fun stuff, you can create arrays to manipulate text before printing;
-## flip File
+## Example 1: flip a File
 
->alias flip='comp_transpose'
->function comp_transpose () {
->        input=$1
->        awk '{for (i=1; i<=NF; i++) a[i]=a[i](NR!=1?FS:"")$i} END {for (i=1; i in a; i++) print(a[i])}' $input
->}
+```bash
+alias flip='comp_transpose'
+function comp_transpose () {
+        input=$1
+        awk '{for (i=1; i<=NF; i++) a[i]=a[i](NR!=1?FS:"")$i} END {for (i=1; i in a; i++) print(a[i])}' $input
+}
+```
 
 Reads as: for each row iterate up to the number of columns, at the END print out each row as a column.
 
