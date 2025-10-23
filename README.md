@@ -1,4 +1,3 @@
-```markdown
 # AWK Functions Examples
 
 This will be a set of examples that utilize AWK functions.
